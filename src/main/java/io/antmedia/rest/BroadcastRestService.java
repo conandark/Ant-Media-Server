@@ -21,6 +21,7 @@ import io.antmedia.AntMediaApplicationAdapter;
 import io.antmedia.StreamIdValidator;
 import io.antmedia.datastore.db.types.Broadcast;
 import io.antmedia.datastore.db.types.ConferenceRoom;
+import io.antmedia.datastore.db.types.Endpoint;
 import io.antmedia.datastore.db.types.SocialEndpointChannel;
 import io.antmedia.datastore.db.types.SocialEndpointCredentials;
 import io.antmedia.datastore.db.types.TensorFlowObject;
@@ -293,7 +294,9 @@ public class BroadcastRestService extends RestServiceBase{
 	@Path("/{id}/endpoint")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Result addEndpointV2(@ApiParam(value = "Broadcast id", required = true) @PathParam("id") String id,
-			@ApiParam(value = "RTMP url of the endpoint that stream will be republished. If required, please encode the URL", required = true) @QueryParam("rtmpUrl") String rtmpUrl) {
+			@ApiParam(value = "RTMP url of the endpoint that stream will be republished. If required, please encode the URL", required = true) Endpoint endpoint) {
+		
+		String rtmpUrl = endpoint.getRtmpUrl();
 		
 		Result result = super.addEndpoint(id, rtmpUrl);
 		if (result.isSuccess()) 
