@@ -623,8 +623,11 @@ public class BroadcastRestServiceV2UnitTest {
 			streamId = createBroadcast.getStreamId();
 			assertNotNull(streamId);
 			
+			Endpoint endpoint = new Endpoint("rtmp://test.endpoint.url/test");
 			String endpointURL = "rtmp://test.endpoint.url/test";
-			Result result = restServiceReal.addEndpointV2(streamId, endpointURL);
+			
+			
+			Result result = restServiceReal.addEndpointV2(streamId, endpoint);
 			assertTrue(result.isSuccess());
 			
 			assertEquals(1, store.get(streamId).getEndPointList().size());
@@ -641,7 +644,8 @@ public class BroadcastRestServiceV2UnitTest {
 			Mockito.when(muxAdaptor.stopRtmpStreaming(Mockito.anyString())).thenReturn(true);
 			
 			String endpointURL = "rtmp://test.endpoint.url/test";
-			Result result = restServiceSpy.addEndpointV2(streamId, endpointURL);
+			Endpoint endpoint = new Endpoint("rtmp://test.endpoint.url/test");
+			Result result = restServiceSpy.addEndpointV2(streamId, endpoint);
 			assertTrue(result.isSuccess());
 			
 			assertEquals(1, store.get(streamId).getEndPointList().size());
@@ -678,7 +682,8 @@ public class BroadcastRestServiceV2UnitTest {
 		assertNotNull(streamId);
 
 		String endpointURL = "rtmp://test.endpoint.url/test";
-		Result result = restServiceReal.addEndpointV2(streamId, endpointURL);
+		Endpoint endpointObject = new Endpoint("rtmp://test.endpoint.url/test");
+		Result result = restServiceReal.addEndpointV2(streamId, endpointObject);
 		assertTrue(result.isSuccess());
 		
 		assertFalse(restServiceReal.addEndpointV2(streamId, null).isSuccess());
@@ -700,11 +705,11 @@ public class BroadcastRestServiceV2UnitTest {
 			Mockito.when(muxAdaptor.startRtmpStreaming(Mockito.anyString())).thenReturn(true);
 			
 			store.updateStatus(broadcast.getStreamId(), AntMediaApplicationAdapter.BROADCAST_STATUS_BROADCASTING);
-			assertTrue(restServiceSpy.addEndpointV2(streamId, "rtmp://test.endpoint.url/any_stream_test").isSuccess());
+			assertTrue(restServiceSpy.addEndpointV2(streamId, endpointObject).isSuccess());
 		}
 		
 		{
-			assertFalse(restServiceReal.addEndpointV2("Not_regsitered_stream_id",  "rtmp://test.endpoint.url/any_stream_test").isSuccess());
+			assertFalse(restServiceReal.addEndpointV2("Not_registered_stream_id",  endpointObject).isSuccess());
 		}
 	}
 

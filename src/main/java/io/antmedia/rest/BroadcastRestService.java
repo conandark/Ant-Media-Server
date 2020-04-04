@@ -296,7 +296,11 @@ public class BroadcastRestService extends RestServiceBase{
 	public Result addEndpointV2(@ApiParam(value = "Broadcast id", required = true) @PathParam("id") String id,
 			@ApiParam(value = "RTMP url of the endpoint that stream will be republished. If required, please encode the URL", required = true) Endpoint endpoint) {
 		
-		String rtmpUrl = endpoint.getRtmpUrl();
+		String rtmpUrl = null;
+		
+		if(endpoint != null) {
+			rtmpUrl = endpoint.getRtmpUrl();
+		}
 		
 		Result result = super.addEndpoint(id, rtmpUrl);
 		if (result.isSuccess()) 
