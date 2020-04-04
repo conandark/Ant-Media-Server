@@ -1177,12 +1177,15 @@ public class RestServiceV2Test {
 
 	public static Result addEndpoint(String broadcastId, String rtmpUrl) throws Exception 
 	{
-		String url = ROOT_SERVICE_URL + "/v2/broadcasts/"+ broadcastId +"/endpoint?rtmpUrl=" + rtmpUrl;
+		Endpoint endpointObject = new Endpoint(rtmpUrl);
+		
+		String url = ROOT_SERVICE_URL + "/v2/broadcasts/"+ broadcastId +"/endpoint";
 		
 		CloseableHttpClient client = HttpClients.custom().setRedirectStrategy(new LaxRedirectStrategy()).build();
 
 		HttpUriRequest post = RequestBuilder.post().setUri(url)
-				.setHeader(HttpHeaders.CONTENT_TYPE, "application/json").build();
+				.setHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+				.setEntity(new StringEntity(gson.toJson(endpointObject))).build();
 
 		CloseableHttpResponse response = client.execute(post);
 
